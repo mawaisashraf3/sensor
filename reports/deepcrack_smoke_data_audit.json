@@ -1,0 +1,13 @@
+{
+  "samples": 537,
+  "splits": {
+    "train": 307,
+    "test": 192,
+    "val": 38
+  },
+  "categories": {
+    "unspecified": 537
+  },
+  "decoded_image_hashes_checked": 537,
+  "content_sha256": "c545ac951962a6ec4ad4f21a21548edb828be71d479ea5f3c1defbadf7b939c1"
+}

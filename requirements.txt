@@ -1,0 +1,7 @@
+# For a CPU installation, install torch from its CPU index first; see README.
+torch>=2.2,<3
+numpy>=1.24,<3
+Pillow>=10,<13
+scipy>=1.10,<2
+PyYAML>=6,<7
+pytest>=8,<10

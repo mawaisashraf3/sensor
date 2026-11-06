@@ -1,0 +1,16 @@
+{
+  "samples": 40,
+  "splits": {
+    "train": 24,
+    "val": 4,
+    "test": 12
+  },
+  "categories": {
+    "longitudinal": 10,
+    "transverse": 10,
+    "alligator": 10,
+    "fatigue": 10
+  },
+  "decoded_image_hashes_checked": 40,
+  "content_sha256": "36d32ae93ecd0fc36257c49521a95fcc1440efe47c4f1993b3a3e1b57df70286"
+}

@@ -1,0 +1,6 @@
+# Copy to a local file and replace with prepared, audited manifest paths.
+DeepCrack: data/deepcrack/manifest.csv
+Crack500: data/crack500/manifest.csv
+RDD2022: data/rdd2022_pixel_masks/manifest.csv
+DCD1K: data/dcd1k/manifest.csv
+4TRCD: data/4trcd/manifest.csv

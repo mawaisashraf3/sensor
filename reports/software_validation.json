@@ -1,0 +1,13 @@
+{
+  "tests_passed": 30,
+  "tests_failed": 0,
+  "attention_equation_check": "passed",
+  "full_model_forward_backward": "passed",
+  "exact_cpu_resume": "passed",
+  "synthetic_ablation_variants_completed": 9,
+  "real_deepcrack_samples_audited": 537,
+  "real_deepcrack_smoke_epochs": 2,
+  "package_wheel_build": "passed",
+  "installed_cli_entrypoint": "passed",
+  "scope": "software and short execution validation; distinct from paper table reproduction"
+}

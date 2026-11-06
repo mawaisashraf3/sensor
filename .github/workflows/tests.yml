@@ -1,0 +1,19 @@
+name: Research code checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install torch --index-url https://download.pytorch.org/whl/cpu
+      - run: pip install -e '.[test]'
+      - run: pytest -q
+      - run: |
+          crackvision synthetic --out data/smoke --count 40 --size 96
+          crackvision train --config configs/smoke.yaml --manifest data/smoke/manifest.csv --out runs/smoke --device cpu
+          crackvision evaluate --checkpoint runs/smoke/best.pt --manifest data/smoke/manifest.csv --out runs/smoke/test_metrics.json --device cpu

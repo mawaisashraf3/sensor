@@ -1,0 +1,34 @@
+{
+  "seed": 42,
+  "threads": 2,
+  "model": {
+    "name": "swin",
+    "embed_dim": 12,
+    "depths": [
+      2,
+      2,
+      2,
+      2
+    ],
+    "heads": [
+      3,
+      3,
+      6,
+      12
+    ],
+    "window": 4,
+    "spatial_attention": true
+  },
+  "data": {
+    "size": 64,
+    "mode": "binary",
+    "denoise": "gaussian",
+    "morphology": 0
+  },
+  "training": {
+    "epochs": 2,
+    "batch_size": 4,
+    "lr": 0.0002,
+    "loss": "hybrid"
+  }
+}

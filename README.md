@@ -83,7 +83,7 @@ crackvision train --config configs/manuscript.yaml \
   --resume runs/deepcrack/last.pt
 ```
 
-Adam starts at 0.0002; StepLR halves the rate after each 10 completed epochs. The primary loss is 0.5 BCE + 0.5 Dice. Validation mIoU selects `best.pt`. Training never selects checkpoints using test scores. The run directory stores configuration, data audit, environment, history and checkpoints. Existing runs are protected against accidental overwrite. Resume requires the same configuration and manifest bytes; keep dataset content immutable during a run. Only load checkpoints from trusted sources.
+Adam starts at 0.0002; StepLR halves the rate after each 10 completed epochs. The primary loss is 0.5 BCE + 0.5 Dice. Validation mIoU selects `best.pt`. Training never selects checkpoints using test scores. The run directory stores configuration, data audit, environment, history and checkpoints. Existing runs are protected against accidental overwrite. Resume verifies configuration, manifest bytes and a dataset content fingerprint; keep dataset content immutable during a run. Only load checkpoints from trusted sources.
 
 Default inference threshold is 0.5. Any threshold selection should use validation data only, then remain fixed for test. Evaluation resizes images/masks to the configured square size, using bilinear/nearest interpolation respectively. Full-resolution tiled inference is a separate deployment path; do not compare its outputs to resized benchmark metrics without stating the protocol.
 
@@ -114,7 +114,7 @@ crackvision suite --config configs/manuscript.yaml \
 crackvision summarize --root runs --out runs/results.csv
 ```
 
-`suite` trains one model per dataset and evaluates its best checkpoint on every target test set, producing a generalization matrix. Target-domain test sets must also be disjoint from source training data across collections; the per-manifest audit cannot establish cross-collection scene independence. All models use the same binary mask definition. For statistical comparisons, run the same splits at multiple declared seeds, report distribution/uncertainty, and reserve test data for final measurement. A single seed is sufficient only for execution checks.
+`suite` trains one model per dataset and evaluates its best checkpoint on every target test set, producing a generalization matrix. Target-domain test sets must also be disjoint from source training data across collections; the suite rejects exact decoded-image overlap across collections, while acquisition metadata is still needed to establish scene independence. All models use the same binary mask definition. For statistical comparisons, run the same splits at multiple declared seeds, report distribution/uncertainty, and reserve test data for final measurement. A single seed is sufficient only for execution checks.
 
 ## Repository layout
 
@@ -128,8 +128,8 @@ src/crackvision/
   engine.py              Train/evaluate/infer/benchmark/provenance
   cli.py                 Unified experiment commands
 scripts/                 Checksum-pinned dataset adapter
-tests/                  Numerical, data-integrity and workflow checks
-docs/                   Scientific mapping, dataset guide, model card
+tests/                   Numerical, data-integrity and workflow checks
+docs/                    Scientific mapping, dataset guide, model card
 reports/                 Measured execution reports and their scope
 .github/workflows/       CPU checks and demo workflow
 ```
