@@ -12,3 +12,6 @@ runs/
 build/
 dist/
 configs/*.local.yaml
+
+# Local probability/qualitative arrays are regenerated from the source dataset.
+*.npz

@@ -1,0 +1,28 @@
+# Exploratory CPU study; distinct from the manuscript 50-epoch protocol.
+seed: 42
+threads: 2
+model:
+  name: swin
+  embed_dim: 12
+  depths:
+  - 2
+  - 2
+  - 2
+  - 2
+  heads:
+  - 3
+  - 3
+  - 6
+  - 12
+  window: 4
+  spatial_attention: true
+data:
+  size: 96
+  mode: binary
+  denoise: gaussian
+  morphology: 0
+training:
+  epochs: 15
+  batch_size: 8
+  lr: 0.001
+  loss: hybrid

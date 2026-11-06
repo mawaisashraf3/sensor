@@ -6,6 +6,37 @@ We implemented the transformer encoder–decoder, preprocessing, training, evalu
 
 The system predicts a binary crack mask and probability map from a road image. Four crack categories can be carried as dataset metadata for subgroup evaluation. The source manuscript and research datasets remain outside public source control.
 
+## Research results and figures
+
+We extended the project with a matched three-model DeepCrack study, ten scientific figures, numerical result tables and an editable Word report. The exploratory runs use 15 epochs and compact 96×96 models; they are separate from the manuscript's full-model, five-dataset protocol.
+
+**[Read the detailed results report](docs/RESEARCH_RESULTS.md)** · **[Download the Word report](docs/RESEARCH_RESULTS.docx)** · **[Open the ten-figure PDF](figures/research_figures.pdf)** · **[Reproduce the study](docs/EXPERIMENT_GUIDE.md)**
+
+![Measured segmentation comparison](figures/04_segmentation_results.png)
+
+![Held-out predictions, including a failure case](figures/08_qualitative_predictions.png)
+
+| Figure | Research question |
+|---|---|
+| [1. Learning curves](figures/01_learning_curves.png) | How do training and validation losses evolve? |
+| [2. Validation dynamics](figures/02_validation_dynamics.png) | How do F1, mIoU and learning rate change? |
+| [3. Dataset composition](figures/03_dataset_composition.png) | How many images/groups are held out, and how imbalanced are labels? |
+| [4. Segmentation results](figures/04_segmentation_results.png) | How do the measured operating points and uncertainty compare? |
+| [5. Precision–recall](figures/05_precision_recall.png) | How well do probabilities rank foreground pixels? |
+| [6. Threshold selection](figures/06_validation_thresholds.png) | Which thresholds maximize validation F1? |
+| [7. Confusion matrices](figures/07_confusion_matrices.png) | Which class errors dominate? |
+| [8. Qualitative predictions](figures/08_qualitative_predictions.png) | What do lowest-, median- and highest-F1 examples look like? |
+| [9. Robustness checks](figures/09_robustness_tests.png) | How do controlled image perturbations affect predictions? |
+| [10. Efficiency](figures/10_efficiency_comparison.png) | What are the measured CPU speed, parameter count and accuracy tradeoffs? |
+
+PNG and SVG versions accompany every figure. The captions explain axes, sample selection, operating thresholds, uncertainty and interpretation. [Machine-readable results](reports/research_cpu/results.csv) and [full analysis](reports/research_cpu/analysis.json) retain measured values and provenance.
+
+```bash
+pip install -e '.[test,research]'
+python scripts/run_research_study.py --manifest data/deepcrack/manifest.csv \
+  --runs runs/research_cpu --analysis reports/research_cpu --figures figures
+```
+
 ## What we implemented
 
 - A four-stage hierarchical Swin encoder and matching U-shaped decoder, with relative position bias, masked shifted windows, patch merging/expansion, skip fusion and spatial attention gates.
@@ -136,7 +167,7 @@ reports/                 Measured execution reports and their scope
 
 ## Research status
 
-We completed software implementation, numerical/data checks and executable workflow validation. [VALIDATION.md](docs/VALIDATION.md) records the precise runs performed. The full 256×256 architecture also passed a CPU forward/backward check with finite gradients.
+We completed software implementation, numerical/data checks, executable workflow validation and the exploratory three-model study illustrated above. [VALIDATION.md](docs/VALIDATION.md) records the precise runs performed. The full 256×256 architecture also passed a CPU forward/backward check with finite gradients.
 
 Full 50-epoch RTX3090 experiments across the five original datasets, author-provided 4TRCD images/annotations, RDD2022 pixel ground truth, and comparisons against the cited original baseline implementations remain the requirements for reproducing the paper's tables. The manuscript contains conflicting split counts, backbone descriptions and some metric/timing entries; [METHOD_MAPPING.md](docs/METHOD_MAPPING.md) records how we resolved the implementation choices. Measured reports use their own provenance and do not claim reproduction of those paper tables.
 

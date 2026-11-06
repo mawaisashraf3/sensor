@@ -1,13 +1,17 @@
 {
-  "scripts/fetch_deepcrack.py": "b5b8716f16894dff524d319e289216dc8a6b518697f56f51a14066d927f27d54",
-  "src/crackvision/__init__.py": "77cc6d5baaefd1d6943d425aa7d3b8bde4b3b3b70f150f74fca53fac671f6a19",
+  "src/crackvision/__init__.py": "9488153ed54baa25d89754d1547677c19546d75971d1ec7ca2cc6231e2c8b641",
   "src/crackvision/cli.py": "d04986ae97ee2c983eddbd8a075e630d00d059fbeac1400dd59a9884d9221d0c",
-  "src/crackvision/data.py": "88b59ec13b2fcf98ebbebb4ebe1937145cecda051adc6ff736f17fbd7ae5f18d",
+  "src/crackvision/data.py": "5b281107b0d092a3cfcaec94c76213b2e5cd32383002d0c4b7d56189caea74bf",
   "src/crackvision/engine.py": "aa6ed4ac2ae6fb61e647f1a29f423ad94eaddc3afc7ef41486bcc553785f92f6",
+  "src/crackvision/figures.py": "5453bed11727ae2842b4d275ed6ea6ce89403d25f7c24e073e222686f9b7b003",
   "src/crackvision/losses.py": "146b5354fe15cff1d642dcdabbb79b136c747f9792b0f9642b90f64e8b4c852a",
   "src/crackvision/metrics.py": "3a62eb9cadc9733cab760b74d1c9afb48b79ebc18fe98d473f481af1d3ccd253",
   "src/crackvision/model.py": "7aea4c92749a43456a453730a515a6f8dd85c26b2658b73285585e854ca81ed3",
+  "src/crackvision/research.py": "0c3ac209abe2f8bddf49eb4951f0330e55f7936407fb8eb9fcd0f0db889ff332",
   "tests/test_data_metrics.py": "525966f52be276307485069eda4f80337162dc9e7b5cfa66a631dc94b8aea547",
   "tests/test_model.py": "84ae4ee23b661cb41bf33e5319da34ecaac9344673e8139bea25a50ab1e56e6d",
-  "tests/test_pipeline.py": "57207884744c71ed41767a10038420325f9a9e789709139925e1753d069b4fbb"
+  "tests/test_pipeline.py": "57207884744c71ed41767a10038420325f9a9e789709139925e1753d069b4fbb",
+  "tests/test_research.py": "8b3072af94a73db78ffef9ecd07aa678609272960cd19a68d127fea94e87ed15",
+  "scripts/fetch_deepcrack.py": "b5b8716f16894dff524d319e289216dc8a6b518697f56f51a14066d927f27d54",
+  "scripts/run_research_study.py": "8bf6ef3becc60023fd490345b9b4f2ba4f5cd80257735a8522f99b9174c6dab7"
 }

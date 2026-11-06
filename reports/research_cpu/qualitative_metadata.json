@@ -1,0 +1,19 @@
+{
+  "indices": [
+    61,
+    171,
+    96
+  ],
+  "names": [
+    "test__IMG_5776-1.jpg",
+    "train__IMG33-1.jpg",
+    "test__IMG_6544-3.jpg"
+  ],
+  "f1": [
+    0.0,
+    0.545,
+    0.932475884244373
+  ],
+  "selection": "lowest, median and highest per-image test F1 at the frozen validation-selected threshold",
+  "threshold": 0.475
+}

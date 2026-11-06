@@ -4,7 +4,7 @@ We completed the following local checks using CPU PyTorch. Exact package version
 
 ## Software checks
 
-- **30 tests passed.** We checked window partition/reversal, the direct attention equation, shift/padding masks, arbitrary input sizes, finite gradients, attention ablation, all four losses at extreme logits, known-count metrics, empty-foreground handling, deterministic group splits, invalid annotations, duplicated images, source-group overlap, dataset content fingerprints, exact checkpoint resume, tiled coverage and train/evaluate/infer/benchmark integration.
+- **35 tests passed.** We checked window partition/reversal, the direct attention equation, shift/padding masks, arbitrary input sizes, finite gradients, attention ablation, all four losses at extreme logits, known-count metrics, empty-foreground handling, deterministic group splits, invalid annotations, duplicated images, source-group overlap, dataset content fingerprints, exact checkpoint resume, tiled coverage and train/evaluate/infer/benchmark integration.
 - The full `configs/manuscript.yaml` architecture completed one random-input CPU forward/backward pass at 256×256 with finite gradients. Its output shape was [1,1,256,256], with **34,272,667** trainable parameters. See `reports/full_model_check.json`.
 - We built the installable Python wheel and exercised the experiment CLI, the one-dataset `suite` path and CSV summarization.
 - We completed nine two-epoch synthetic ablation variants. Their measured outputs are in `reports/synthetic_ablation_summary.json` and `.csv`.
@@ -51,3 +51,7 @@ These numbers show that this short, small-model run detects very few crack pixel
 Run the primary model for the declared 50-epoch protocol on each original dataset with confirmed scene groups, reconciled split definitions and reviewed pixel annotations. Include 4TRCD's author-held images/contours and an explicit RDD2022 segmentation annotation protocol. Train/evaluate the original cited comparison models using matching task definitions and record the complete settings. Repeat independent seeds, quantify uncertainty, measure hardware-specific speed and compare metrics under the same averaging and resolution protocol.
 
 The manuscript's reported tables have not been reproduced by these execution checks. We have documented the implementation assumptions and experimental inconsistencies in `METHOD_MAPPING.md` so subsequent experiments can be reviewed and reproduced accurately.
+
+## Extended measured research study
+
+We subsequently completed three matched 15-epoch DeepCrack runs at 96×96, validation-only threshold selection, 1,000-resample source-group intervals, five photometric conditions per model and 30-iteration CPU benchmarks. Ten result figures, numerical JSON/CSV and an editable Word report are included. See [RESEARCH_RESULTS.md](RESEARCH_RESULTS.md) and [EXPERIMENT_GUIDE.md](EXPERIMENT_GUIDE.md) for the complete protocol and results. These exploratory experiments extend the original execution checks without claiming reproduction of the manuscript tables.

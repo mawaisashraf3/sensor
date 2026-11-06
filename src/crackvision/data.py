@@ -250,7 +250,9 @@ class CrackDataset(Dataset):
         denoise="gaussian",
         morphology=0,
         seed=42,
+        image_transform=None,
     ):
+        self.image_transform = image_transform
         self.rows = [r for r in read_manifest(manifest) if r["split"] == split]
         if not self.rows:
             raise ValueError(f"Add {split} samples to the manifest")
@@ -273,6 +275,8 @@ class CrackDataset(Dataset):
             image = im.convert("RGB")
         with Image.open(row["mask"]) as im:
             mask = im.convert("L")
+        if self.image_transform is not None:
+            image = self.image_transform(image, i)
         if self.split == "train":
             image, mask = augment(
                 image, mask, random.Random(self.seed + self.epoch * 1000003 + i)

@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "Cite this implementation and the source manuscript; confirm final manuscript metadata before submission."
 title: "Crack Vision Net: Manuscript-based research implementation"
 type: software
-version: 0.1.0
+version: 0.2.0
 license: MIT
 repository-code: "https://github.com/mawaisashraf3/sensor"
 authors:

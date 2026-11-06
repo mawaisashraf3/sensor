@@ -1,5 +1,5 @@
 {
-  "tests_passed": 30,
+  "tests_passed": 35,
   "tests_failed": 0,
   "attention_equation_check": "passed",
   "full_model_forward_backward": "passed",
@@ -9,5 +9,16 @@
   "real_deepcrack_smoke_epochs": 2,
   "package_wheel_build": "passed",
   "installed_cli_entrypoint": "passed",
-  "scope": "software and short execution validation; distinct from paper table reproduction"
+  "scope": "software and short execution validation; distinct from paper table reproduction",
+  "research_analysis_tests": "validation thresholds, source-group bootstrap, deterministic perturbations and immutable labels",
+  "research_project_version": "0.2.0",
+  "research_training_runs": 3,
+  "research_epochs_per_model": 15,
+  "research_test_images": 192,
+  "research_figures": 10,
+  "research_report_formats": [
+    "Markdown",
+    "Word",
+    "PDF figure book"
+  ]
 }

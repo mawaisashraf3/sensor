@@ -1,0 +1,76 @@
+{
+  "scope": "DeepCrack | exploratory CPU study | measured results | separate from manuscript tables",
+  "analysis_sha256": "8304d6a112187f417e81b508be944dfab66a4509fb3d5d832599349cb28a29bf",
+  "figures": [
+    {
+      "number": 1,
+      "title": "Learning curves",
+      "png": "01_learning_curves.png",
+      "svg": "01_learning_curves.svg",
+      "caption": "Training and validation BCE\u2013Dice losses for all three matched runs. Curves cover the complete recorded training histories; augmentation affects training only. Checkpoint selection uses validation mIoU, not the minimum test loss. A widening train\u2013validation gap would indicate overfitting; loss magnitude alone does not establish crack localization quality."
+    },
+    {
+      "number": 2,
+      "title": "Validation learning",
+      "png": "02_validation_dynamics.png",
+      "svg": "02_validation_dynamics.svg",
+      "caption": "Validation F1, two-class mIoU and the learning-rate schedule. Threshold 0.5 is fixed during model selection. Background-heavy mIoU can remain near 0.5 even when foreground F1 is zero. The learning rate halves after epoch 10; this setting is shared across models."
+    },
+    {
+      "number": 3,
+      "title": "Dataset composition",
+      "png": "03_dataset_composition.png",
+      "svg": "03_dataset_composition.svg",
+      "caption": "Image counts and source-group counts for the recorded train/validation/test split, together with distributions of original-resolution foreground fractions. The counts are computed from the analyzed manifest. Groups come from the recorded filename heuristic; differences between group and image proportions reflect correlated crops. The histogram shows why pixel accuracy must be interpreted alongside foreground F1."
+    },
+    {
+      "number": 4,
+      "title": "Measured segmentation results",
+      "png": "04_segmentation_results.png",
+      "svg": "04_segmentation_results.svg",
+      "caption": "Precision, recall, F1 and mIoU on the held-out test images; the right panel contrasts threshold 0.5 with thresholds selected using the validation images only. Whiskers show source-group bootstrap 95% percentile intervals for tuned test F1 (1,000 resamples). Swin + spatial achieved F1=0.592 and mIoU=0.694 at threshold 0.475. Intervals describe test-group sampling uncertainty conditional on one fitted model, not training-seed variation."
+    },
+    {
+      "number": 5,
+      "title": "Precision\u2013recall curves",
+      "png": "05_precision_recall.png",
+      "svg": "05_precision_recall.svg",
+      "caption": "Test-set pixel precision\u2013recall curves from 256 probability bins. Legend AP is explicitly the binned pixel AP approximation; it is not object mAP@0.5. The dashed line gives the test pixel foreground prevalence, a random-ranking reference. This descriptive test curve does not select the deployed threshold."
+    },
+    {
+      "number": 6,
+      "title": "Validation threshold selection",
+      "png": "06_validation_thresholds.png",
+      "svg": "06_validation_thresholds.svg",
+      "caption": "Validation precision, recall and F1 across the declared threshold grid (0.05\u20130.95, step 0.025). Each dashed vertical line marks the validation-F1 optimum, with deterministic tie handling. That value is frozen before test evaluation. Thresholds should be recalibrated on a validation population matching any new deployment domain."
+    },
+    {
+      "number": 7,
+      "title": "Confusion matrices",
+      "png": "07_confusion_matrices.png",
+      "svg": "07_confusion_matrices.svg",
+      "caption": "Pixel confusion matrices at the frozen validation-selected thresholds. Rows indicate true background/crack and columns predicted background/crack. Color is normalized within each true class; annotations retain raw pixel counts and row percentages. This makes missed cracks visible despite the much larger background class."
+    },
+    {
+      "number": 8,
+      "title": "Qualitative predictions",
+      "png": "08_qualitative_predictions.png",
+      "svg": "08_qualitative_predictions.svg",
+      "caption": "Three held-out Swin examples chosen by a declared rule: lowest, median and highest per-image test F1. Columns show resized RGB input, binary model input, ground truth, crack probability, predicted mask and an error map. Error colors: teal=true positive, orange=false positive, purple=false negative, white=true negative. Ranking is descriptive and intentionally includes a failure; the displayed images are not an unbiased random sample. Source imagery and annotations: Liu et al., DeepCrack (2019), under upstream terms."
+    },
+    {
+      "number": 9,
+      "title": "Photometric stress tests",
+      "png": "09_robustness_tests.png",
+      "svg": "09_robustness_tests.svg",
+      "caption": "Test F1 under deterministic brightness factors 0.6 and 1.4, Gaussian blur radius 1.2, and Gaussian RGB noise with standard deviation 0.05 on [0,1]. Perturbations occur before the trained grayscale/denoising/Otsu pipeline; labels and the selected threshold stay fixed. These are controlled sensitivity checks, not proof of real weather or cross-country robustness. Shared per-image random seeds make noise comparisons reproducible."
+    },
+    {
+      "number": 10,
+      "title": "Accuracy and efficiency",
+      "png": "10_efficiency_comparison.png",
+      "svg": "10_efficiency_comparison.svg",
+      "caption": "Single-device batch-one forward latency and model size at the same configured input resolution. The scatter relates measured test F1 to mean latency; the second panel reports trainable parameters. Timing uses 5 warmups, 30 measured iterations and 2 CPU threads, excluding image decoding, preprocessing and output writing. Architecture size and CPU throughput must not be compared directly with the manuscript RTX3090 full-model claims."
+    }
+  ]
+}

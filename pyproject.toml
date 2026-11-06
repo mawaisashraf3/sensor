@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "crackvision-research"
-version = "0.1.0"
+version = "0.2.0"
 description = "Manuscript-based Swin U-Net pavement crack segmentation"
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,9 +13,12 @@ dependencies = ["torch>=2.2,<3", "numpy>=1.24,<3", "Pillow>=10,<13", "scipy>=1.1
 
 [project.optional-dependencies]
 test = ["pytest>=8,<10"]
+research = ["matplotlib>=3.8,<4", "python-docx>=1.1,<2"]
 
 [project.scripts]
 crackvision = "crackvision.cli:main"
+crackvision-research = "crackvision.research:main"
+crackvision-figures = "crackvision.figures:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
