@@ -136,7 +136,7 @@ def measure(model, loader, device, threshold=0.5, loss=None):
     }
 
 
-def train(cfg, manifest, out, device="auto", resume=None):
+def train(cfg, manifest, out, device="auto", resume=None, *, verified_audit=None):
     cfg = copy.deepcopy(cfg)
     out = Path(out)
     if out.exists() and any(out.iterdir()) and resume is None:
@@ -147,7 +147,7 @@ def train(cfg, manifest, out, device="auto", resume=None):
     seed_everything(cfg["seed"])
     device = device_for(device)
     torch.set_num_threads(cfg.get("threads", 2))
-    summary = audit(manifest)
+    summary = audit(manifest) if verified_audit is None else verified_audit
     trainset = dataset(cfg, manifest, "train")
     valset = dataset(cfg, manifest, "val")
     generator = torch.Generator().manual_seed(cfg["seed"])

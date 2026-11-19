@@ -1,0 +1,18 @@
+# Prospective compact factorial test on the existing DeepCrack group split.
+seed: 42
+threads: 2
+model:
+  name: swin
+  embed_dim: 12
+  depths: [2, 2, 2, 2]
+  heads: [3, 3, 6, 12]
+  window: 4
+  refinement_location: decoder
+data:
+  size: 64
+  mode: rgb
+training:
+  epochs: 2
+  batch_size: 8
+  lr: 0.001
+  loss: hybrid

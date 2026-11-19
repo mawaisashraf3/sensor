@@ -6,15 +6,45 @@ We implemented the transformer encoder–decoder, preprocessing, training, evalu
 
 The system predicts a binary crack mask and probability map from a road image. Four crack categories can be carried as dataset metadata for subgroup evaluation. The source manuscript and research datasets remain outside public source control.
 
+## R5 reproducibility audit and RGB factorial
+
+![Crack Vision Net architecture](figures/r5_architecture.png)
+
+The R5 code implements a decoder-level spatial gate and a six-condition, five-seed test of gate and loss on a frozen group split. The [R5 protocol](docs/R5_PROTOCOL.md) covers setup, configurations, data and annotation audits, mask exports, paired uncertainty, and synchronized timing.
+
+The archived DeepCrack study uses a separate 96 × 96, single-seed, skip-gated model and grayscale-derived binary input. R5 independently recomputed its results from archived per-image confusion counts. The paired F1 difference for skip-gated versus ungated Swin was −0.0085 (95% source-group bootstrap interval −0.0197 to 0.0028). The 4TRCD full-model experiment requires the original data, verified masks and acquisition metadata. [Archived numerical audit](reports/r5/archived_audit.json)
+
+| Archived DeepCrack model | Precision | Recall | Foreground F1 | Accuracy | Crack IoU | Background IoU | mIoU |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| Skip-gated Swin | 0.6211 | 0.5657 | 0.5921 | 0.9691 | 0.4206 | 0.9684 | 0.6945 |
+| Ungated Swin | 0.6275 | 0.5758 | 0.6006 | 0.9697 | 0.4292 | 0.9690 | 0.6991 |
+| CNN U-Net | 0.5385 | 0.6806 | 0.6013 | 0.9643 | 0.4299 | 0.9633 | 0.6966 |
+
 ## Research results and figures
 
 We extended the project with a matched three-model DeepCrack study, ten scientific figures, numerical result tables and an editable Word report. The exploratory runs use 15 epochs and compact 96×96 models; they are separate from the manuscript's full-model, five-dataset protocol.
 
 **[Read the detailed results report](docs/RESEARCH_RESULTS.md)** · **[Download the Word report](docs/RESEARCH_RESULTS.docx)** · **[Open the ten-figure PDF](figures/research_figures.pdf)** · **[Reproduce the study](docs/EXPERIMENT_GUIDE.md)**
 
-![Measured segmentation comparison](figures/04_segmentation_results.png)
+![learning curves](figures/01_learning_curves.png)
 
-![Held-out predictions, including a failure case](figures/08_qualitative_predictions.png)
+![validation dynamics](figures/02_validation_dynamics.png)
+
+![dataset composition](figures/03_dataset_composition.png)
+
+![segmentation results](figures/04_segmentation_results.png)
+
+![precision recall](figures/05_precision_recall.png)
+
+![validation thresholds](figures/06_validation_thresholds.png)
+
+![confusion matrices](figures/07_confusion_matrices.png)
+
+![qualitative predictions](figures/08_qualitative_predictions.png)
+
+![robustness tests](figures/09_robustness_tests.png)
+
+![efficiency comparison](figures/10_efficiency_comparison.png)
 
 | Figure | Research question |
 |---|---|

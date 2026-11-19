@@ -1,0 +1,18 @@
+# Planned 4TRCD RGB protocol. Values are explicit choices for the new implementation.
+seed: 42
+threads: 2
+model:
+  name: swin
+  embed_dim: 96
+  depths: [2, 2, 6, 2]
+  heads: [3, 6, 12, 24]
+  window: 7
+  refinement_location: decoder
+data:
+  size: 256
+  mode: rgb
+training:
+  epochs: 50
+  batch_size: 4
+  lr: 0.0002
+  loss: hybrid

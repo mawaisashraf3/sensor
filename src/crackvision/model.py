@@ -165,6 +165,7 @@ class CrackVisionNet(nn.Module):
         heads=(3, 6, 12, 24),
         window=7,
         spatial_attention=True,
+        refinement_location="skips",
     ):
         super().__init__()
         if len(depths) != 4 or len(heads) != 4 or any(d < 1 for d in depths):
@@ -179,6 +180,8 @@ class CrackVisionNet(nn.Module):
         self.fuse = nn.ModuleList()
         self.dec = nn.ModuleList()
         self.gates = nn.ModuleList()
+        if refinement_location not in {"skips", "decoder"}:
+            raise ValueError("refinement_location must be 'skips' or 'decoder'")
         for i, d in enumerate(depths):
             dim = embed_dim * 2**i
             self.enc.append(
@@ -193,7 +196,9 @@ class CrackVisionNet(nn.Module):
             self.up.append(Expand(dim * 2, dim))
             self.fuse.append(nn.Linear(dim * 2, dim))
             self.gates.append(
-                SpatialAttention() if spatial_attention else nn.Identity()
+                SpatialAttention()
+                if spatial_attention and refinement_location == "skips"
+                else nn.Identity()
             )
             self.dec.append(
                 nn.Sequential(
@@ -202,6 +207,13 @@ class CrackVisionNet(nn.Module):
             )
         self.final = Expand(embed_dim, embed_dim, 4)
         self.out = nn.Conv2d(embed_dim, 1, 1)
+        # Construct after the shared modules so paired decoder/on-off runs
+        # begin with identical shared weights under the same seed.
+        self.refine = (
+            SpatialAttention()
+            if spatial_attention and refinement_location == "decoder"
+            else nn.Identity()
+        )
 
     def forward(self, x):
         h, w = x.shape[-2:]
@@ -218,7 +230,8 @@ class CrackVisionNet(nn.Module):
         ):
             x = up(x)[:, : skip.shape[1], : skip.shape[2]]
             x = dec(fuse(torch.cat([x, gate(skip)], -1)))
-        return self.out(self.final(x).permute(0, 3, 1, 2))[:, :, :h, :w]
+        x = self.final(self.refine(x))
+        return self.out(x.permute(0, 3, 1, 2))[:, :, :h, :w]
 
 
 class UNet(nn.Module):
