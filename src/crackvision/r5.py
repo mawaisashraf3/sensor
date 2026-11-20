@@ -15,6 +15,27 @@ from .data import audit
 from .engine import benchmark, checkpoint, dataset, device_for, environment, save_json, train
 from .metrics import Confusion
 
+
+class CachedSplit:
+    """Memoize exact deterministic tensors for compact paired studies."""
+    def __init__(self, base):
+        from functools import lru_cache
+        self.base = base
+        self.rows = base.rows
+        self.epoch = 0
+        self._get = lru_cache(maxsize=2 * len(base))(self._item)
+
+    def _item(self, epoch, index):
+        self.base.epoch = epoch
+        return self.base[index]
+
+    def __len__(self):
+        return len(self.base)
+
+    def __getitem__(self, index):
+        return self._get(self.epoch, index)
+
+
 CONDITIONS = dict(zip("ABCDEF", itertools.product((False, True), ("bce", "dice", "hybrid"))))
 METRICS = ("precision", "recall", "f1", "accuracy", "crack_iou", "background_iou", "miou")
 COUNTS = ("tp", "fp", "fn", "tn")
@@ -22,7 +43,10 @@ COUNTS = ("tp", "fp", "fn", "tn")
 
 def sha(path):
     with Path(path).open("rb") as source:
-        return hashlib.file_digest(source, "sha256").hexdigest()
+        digest = hashlib.sha256()
+        for chunk in iter(lambda: source.read(2 ** 20), b""):
+            digest.update(chunk)
+        return digest.hexdigest()
 
 
 @torch.inference_mode()
@@ -54,6 +78,10 @@ def run(config_path, manifest, out, device, seeds):
     })
     rows = []
     for seed in seeds:
+        paired_data = None
+        if config["data"]["size"] <= 96 and config["training"]["epochs"] <= 2 and source["samples"] <= 1000:
+            paired_config = {**config, "seed": seed}
+            paired_data = tuple(CachedSplit(dataset(paired_config, manifest, split)) for split in ("train", "val"))
         for condition, (refine, loss) in CONDITIONS.items():
             cfg = {
                 **config, "seed": seed,
@@ -65,7 +93,7 @@ def run(config_path, manifest, out, device, seeds):
             print(f"Condition {condition}, seed {seed}", flush=True)
             if sha(manifest) != manifest_hash:
                 raise ValueError("Manifest changed after freezing the protocol")
-            train(cfg, manifest, dest, str(device), verified_audit=source)
+            train(cfg, manifest, dest, str(device), verified_audit=source, prepared_data=paired_data)
             best = dest / "best.pt"
             model, state = checkpoint(best, device)
             model.eval()

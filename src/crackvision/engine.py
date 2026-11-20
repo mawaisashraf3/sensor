@@ -136,7 +136,7 @@ def measure(model, loader, device, threshold=0.5, loss=None):
     }
 
 
-def train(cfg, manifest, out, device="auto", resume=None, *, verified_audit=None):
+def train(cfg, manifest, out, device="auto", resume=None, *, verified_audit=None, prepared_data=None):
     cfg = copy.deepcopy(cfg)
     out = Path(out)
     if out.exists() and any(out.iterdir()) and resume is None:
