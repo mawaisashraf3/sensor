@@ -1,0 +1,9 @@
+{
+  "python": "3.12.14",
+  "torch": "2.15.0+cpu",
+  "numpy": "2.5.5",
+  "platform": "Windows-10-10.0.19045-SP0",
+  "cuda": null,
+  "gpu": null,
+  "git_commit": "e9b92a5d16883ee04e4a36106c2488e5199f9cee"
+}

@@ -1,0 +1,9 @@
+{
+  "execution_sources_by_training_seed": {
+    "42 43 44": "9fa8777dd07ea12a8c2630ce1afac4e011301cbc",
+    "45 46": "7f790ea3d6991f6790389d5f934bd7d85f8e8c60"
+  },
+  "archived_study_source": "72a015136d848cf1c4b4033b154695b0b6a88c10",
+  "details": "Second seed group memoized identical augmented training tensors. The process-working-tree HEAD recorded in individual environment files can differ from the source loaded at process startup.",
+  "local_cached_commit": "e9b92a5d16883ee04e4a36106c2488e5199f9cee"
+}

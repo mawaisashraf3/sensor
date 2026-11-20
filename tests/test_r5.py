@@ -52,3 +52,42 @@ def test_annotation_boundary_conventions(tmp_path):
     Image.fromarray(np.roll(mask, 1, axis=1)).save(right)
     result = agreement(left, right, 1)
     assert result == {"dice": 0.0, "crack_iou": 0.0, "boundary_f1": 1.0}
+
+def test_4trcd_release_audit_on_synthetic_images(tmp_path):
+    import csv
+    import pytest
+
+    pytest.importorskip("skimage")
+    import hashlib
+    import json
+
+    from PIL import Image
+    from crackvision.r5_data_audit import REQUIRED, audit_4trcd
+
+    rows = []
+    for i, split in enumerate(("train", "val", "test")):
+        image = tmp_path / f"im{i}.png"
+        mask = tmp_path / f"label{i}.png"
+        arr = np.random.default_rng(i).integers(0, 256, (16, 16, 3), dtype=np.uint8)
+        Image.fromarray(arr).save(image)
+        ref = np.zeros((16, 16), dtype=np.uint8)
+        ref[3:12, i + 2] = 255
+        Image.fromarray(ref).save(mask)
+        digest = lambda p: hashlib.sha256(p.read_bytes()).hexdigest()
+        rows.append(dict(image=image.name, mask=mask.name, split=split, group=f"road{i}",
+                         category="longitudinal", dataset="4TRCD", id=f"test-{i}",
+                         device="fixture", captured_at="2026-01-01T00:00:00Z",
+                         pavement="asphalt", conditions="shadow|dry", mask_version="v1",
+                         image_sha256=digest(image), mask_sha256=digest(mask), width=16, height=16))
+    manifest = tmp_path / "manifest.csv"
+    extra = ("image", "mask", "split", "group", "category", "dataset")
+    with manifest.open("w", newline="", encoding="utf-8") as stream:
+        writer = csv.DictWriter(stream, fieldnames=extra + REQUIRED)
+        writer.writeheader()
+        writer.writerows(rows)
+    out = tmp_path / "audit"
+    audit_4trcd(manifest, out)
+    result = json.loads((out / "audit.json").read_text(encoding="utf-8"))
+    assert result["dataset"]["samples"] == 3
+    assert result["splits"]["test"]["foreground_fraction"] == 9 / 256
+    assert result["splits"]["test"]["skeleton"] == 9

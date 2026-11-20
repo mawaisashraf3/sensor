@@ -1,5 +1,7 @@
 # Manuscript-to-code map
 
+> This file documents the original repository implementation and archived 96 × 96 experiment. For the R5 RGB decoder gate and measured factorial, see [R5 protocol](R5_PROTOCOL.md).
+
 We implemented the image-based crack segmentation method described in **Crack Vision Net: An AI Enabled Vision Sensing Framework for Pavement Crack Detection in Intelligent Transportation Systems**. We reviewed its text, embedded equations, architecture diagrams, dataset descriptions, tables and experimental claims. This repository is a fresh implementation from that description. Original author training code, exact checkpoint provenance and complete experimental records are separate research artifacts.
 
 ## Implemented mathematics

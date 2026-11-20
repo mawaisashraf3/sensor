@@ -1,0 +1,22 @@
+{
+  "batch_size": 1,
+  "input_size": 64,
+  "iterations": 30,
+  "warmup": 5,
+  "mean_ms_per_image": 188.08272333329418,
+  "median_ms_per_image": 110.12289999962377,
+  "p95_ms_per_image": 596.9363249998404,
+  "fps": 5.316809445745521,
+  "parameters": 435037,
+  "scope": "model forward only; excludes disk, preprocessing and output serialization",
+  "device": "cpu",
+  "environment": {
+    "python": "3.12.14",
+    "torch": "2.15.0+cpu",
+    "numpy": "2.5.5",
+    "platform": "Windows-10-10.0.19045-SP0",
+    "cuda": null,
+    "gpu": null,
+    "git_commit": "9fa8777dd07ea12a8c2630ce1afac4e011301cbc"
+  }
+}

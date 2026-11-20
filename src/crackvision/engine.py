@@ -8,6 +8,7 @@ import platform
 import random
 import subprocess
 import time
+from importlib.metadata import version
 from pathlib import Path
 import numpy as np
 import torch
@@ -43,12 +44,27 @@ def environment():
         ).strip()
     except (OSError, subprocess.CalledProcessError):
         commit = "working-tree"
+    driver = None
+    if torch.cuda.is_available():
+        try:
+            driver = subprocess.check_output(
+                ["nvidia-smi", "--query-gpu=driver_version", "--format=csv,noheader"],
+                text=True, stderr=subprocess.DEVNULL, timeout=10,
+            ).strip().splitlines()
+        except (OSError, subprocess.SubprocessError):
+            pass
     return {
         "python": platform.python_version(),
         "torch": str(torch.__version__),
         "numpy": np.__version__,
         "platform": platform.platform(),
+        "processor": platform.processor(),
+        "pillow": version("Pillow"),
+        "scipy": version("scipy"),
+        "pyyaml": version("PyYAML"),
         "cuda": torch.version.cuda,
+        "cudnn": torch.backends.cudnn.version(),
+        "nvidia_driver_versions": driver,
         "gpu": torch.cuda.get_device_name(0) if torch.cuda.is_available() else None,
         "git_commit": commit,
     }

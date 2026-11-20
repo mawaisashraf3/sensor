@@ -20,6 +20,27 @@ The archived DeepCrack study uses a separate 96 × 96, single-seed, skip-gated m
 | Ungated Swin | 0.6275 | 0.5758 | 0.6006 | 0.9697 | 0.4292 | 0.9690 | 0.6991 |
 | CNN U-Net | 0.5385 | 0.6806 | 0.6013 | 0.9643 | 0.4299 | 0.9633 | 0.6966 |
 
+![Paired bootstrap intervals for the archived DeepCrack comparison](figures/r5_archived_paired.png)
+
+### New RGB experiment on DeepCrack
+
+The R5 factorial trained 30 compact CPU models across six conditions and five paired seeds. It used 307/38/192 train/validation/test images, the same 49 held-out filename groups as the archive, two training epochs, 64 × 64 RGB input and a fixed pixel threshold of 0.5. All test metrics were independently recomputed from 5,760 archived binary predictions and their resized reference masks.
+
+| Condition | Decoder gate | Loss | Precision | Recall | F1 mean ± SD | Accuracy | Crack IoU | Background IoU | mIoU |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|
+| A | Off | BCE | 0.0000 | 0.0000 | 0.0000 ± 0.0000 | 0.9602 | 0.0000 | 0.9602 | 0.4801 |
+| B | Off | Dice | 0.3500 | 0.7463 | 0.4675 ± 0.0723 | 0.9277 | 0.3072 | 0.9254 | 0.6163 |
+| C | Off | BCE–Dice | 0.1446 | 0.0099 | 0.0185 ± 0.0414 | 0.9605 | 0.0097 | 0.9605 | 0.4851 |
+| D | On | BCE | 0.0000 | 0.0000 | 0.0000 ± 0.0000 | 0.9602 | 0.0000 | 0.9602 | 0.4801 |
+| E | On | Dice | 0.3573 | 0.7363 | 0.4665 ± 0.0788 | 0.9273 | 0.3068 | 0.9250 | 0.6159 |
+| F | On | BCE–Dice | 0.1446 | 0.0099 | 0.0185 ± 0.0413 | 0.9605 | 0.0097 | 0.9605 | 0.4851 |
+
+Decoder gating changed mean hybrid-loss F1 by −0.00002 (95% paired seed interval −0.00008 to +0.00004). The short schedule and fixed threshold define the scope of this comparison. DeepCrack results do not reproduce the historical multi-dataset tables.
+
+![RGB DeepCrack factorial accuracy across paired training seeds](figures/r5_factorial.png)
+
+[Per-seed metrics](reports/r5/deepcrack_rgb/runs.csv) · [Paired effects and intervals](reports/r5/deepcrack_rgb/summary.json) · [Verification record](reports/r5/deepcrack_rgb/verification.json) · [Runtime measurements](reports/r5/timing_f42.json) · [Portable split IDs](reports/r5/deepcrack_rgb/split_ids.csv)
+
 ## Research results and figures
 
 We extended the project with a matched three-model DeepCrack study, ten scientific figures, numerical result tables and an editable Word report. The exploratory runs use 15 epochs and compact 96×96 models; they are separate from the manuscript's full-model, five-dataset protocol.

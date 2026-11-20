@@ -10,6 +10,8 @@ python -m pytest -q
 python scripts/fetch_deepcrack.py --out data/deepcrack
 ```
 
+For the measured Windows CPU package versions, first install [the experiment requirements](../requirements-r5-cpu.txt) in CPython 3.12.14. On a different device or OS, record the realized environment with the outputs.
+
 The adapter verifies the original archive SHA-256 and produces a 307/38/192 split from 94/15/49 filename-derived groups. Its split differs from the official partition. The group key removes the trailing numeric crop suffix and remains a proxy for common scene origin. Never replace acquisition grouping with this heuristic when true segment membership is available.
 
 ## Recompute the archived study
@@ -38,9 +40,20 @@ The compact R5 configuration uses 64 × 64 images, 2 epochs, batch size 8 and Ad
 | E | On | Dice |
 | F | On | 0.5 BCE + 0.5 Dice |
 
-The gate is a channel mean/max projection followed by a bias-free 7 × 7 convolution and sigmoid multiplication. In R5 it precedes learned ×4 expansion and the final projection. Shared parameters have identical initialization within a seed. A historical checkpoint still reconstructs the architecture declared by its saved configuration. Validation mIoU at 0.5 selects the earliest best checkpoint. Test probabilities are thresholded once at the same operating point for every model. Packed masks are row-major and can be unpacked with `np.unpackbits(packed, axis=1, count=height*width)`. Local outputs include `protocol.json`, per-run `history.json`, `best.pt`, `last.pt`, `test.json`, `test_masks.npz`, `runs.csv` and `summary.json`. Use a new path for another study.
+The gate is a channel mean/max projection followed by a bias-free 7 × 7 convolution and sigmoid multiplication. In R5 it precedes learned ×4 expansion and the final projection. Shared parameters have identical initialization within a seed. A historical checkpoint still reconstructs the architecture declared by its saved configuration. Validation mIoU at 0.5 selects the earliest best checkpoint. Test probabilities are thresholded once at the same operating point for every model. Packed masks are row-major and can be unpacked with `np.unpackbits(packed, axis=1, count=height*width)`. Local outputs include `protocol.json`, per-run `history.json`, `best.pt`, `last.pt`, `test.json`, `test_masks.npz`, `runs.csv` and `summary.json`. Use a new path for another study. Use disjoint seed subsets when sharding a local run.
 
 Per-run metrics pool integer pixel counts and assign zero to undefined ratios. Across-seed intervals use Student t with four degrees of freedom for five seeds, conditional on the fixed test split. Group-level paired intervals additionally resample the same source groups in each model and average each bootstrap contrast across the trained seeds. The two kinds of interval address different sources of uncertainty. Several comparisons are exploratory and use unadjusted intervals.
+
+## Verify and export measurements
+
+```bash
+python -m crackvision.r5_release --manifest data/deepcrack/manifest.csv \
+  --runs runs/r5_deepcrack_cpu --out reports/r5/deepcrack_rgb
+python -m crackvision.r5_figures --archived reports/r5/archived_audit.json \
+  --runs reports/r5/deepcrack_rgb --out figures
+```
+
+The exporter verifies every checkpoint and packed mask checksum, reloads the reference masks independently of the inference dataset, and checks every image-level and pooled confusion value. The compact report includes configurations, histories and per-image counts. Use `--runs` with all directories when combining disjoint shards from an identical protocol. The exact manifest-byte digest is specific to the local file layout. The content digest and filename-to-group mapping can be compared across machines.
 
 ## 4TRCD data release audit
 

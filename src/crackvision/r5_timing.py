@@ -25,9 +25,9 @@ def profile(checkpoint_path, image_paths, output, device_name, warmup, repeats):
 
     def prepare(path):
         with Image.open(path) as source:
-            image = source.convert("RGB").resize((size, size), Image.Resampling.BILINEAR)
+            image = source.convert("RGB")
         image = preprocess(image, data["mode"], data.get("denoise", "gaussian"),
-                           data.get("morphology", 0))
+                           data.get("morphology", 0)).resize((size, size), Image.Resampling.BILINEAR)
         x = np.array(image, dtype=np.float32).transpose((2, 0, 1)) / 255
         return torch.from_numpy(x)[None].to(device)
 

@@ -20,7 +20,10 @@ REQUIRED = ("id", "device", "captured_at", "pavement", "conditions", "mask_versi
 
 def file_sha(path):
     with open(path, "rb") as f:
-        return hashlib.file_digest(f, "sha256").hexdigest()
+        digest = hashlib.sha256()
+        for chunk in iter(lambda: f.read(2 ** 20), b""):
+            digest.update(chunk)
+        return digest.hexdigest()
 
 
 def perceptual_hash(path):
@@ -72,6 +75,8 @@ def audit_4trcd(path, out, threshold=8, embedding_file=None, cosine=.98,
     for r in rows:
         if any(not r.get(key, "").strip() for key in REQUIRED):
             raise ValueError(f"Missing required 4TRCD metadata: {r['image']}")
+        if Path(r["id"]).name != r["id"] or r["id"] in {".", ".."}:
+            raise ValueError("Immutable IDs must be safe filename components")
         if r["id"] in ids:
             raise ValueError(f"Repeated immutable ID: {r['id']}")
         ids.add(r["id"])
@@ -144,8 +149,6 @@ def audit_4trcd(path, out, threshold=8, embedding_file=None, cosine=.98,
             writer.writerow([r["id"], r["split"], fg, mask.size, ncomp, int(skeleton.sum()),
                              float(np.median(widths)) if len(widths) else ""])
             if second_masks and (other := Path(second_masks) / f"{r['id']}.png").is_file():
-                if Path(r["id"]).name != r["id"]:
-                    raise ValueError("Independent mask filenames require basename IDs")
                 paired.append({"id": r["id"], "split": r["split"], "category": r["category"],
                                **agreement(r["mask"], other, tolerance)})
     for entry in stats.values():
